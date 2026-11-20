@@ -6,7 +6,24 @@ import ProjectList from '@/components/ProjectList';
 async function SchoolProjectList() {
   await connection();
 
-  const projects = await getProjects('school');
+  let projects;
+  try {
+    projects = await getProjects('school');
+  } catch {
+    return (
+      <p className="text-sm text-red-400">
+        Unable to load projects right now. Please try again later.
+      </p>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <p className="text-sm opacity-75 text-gray-400">
+        No school projects found.
+      </p>
+    );
+  }
 
   return <ProjectList projects={projects} />;
 }
